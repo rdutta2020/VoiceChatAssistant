@@ -1,6 +1,7 @@
 ## Voice Chat Assistant – Android (OpenAI + SpeechRecognizer + TTS)
 
-![Uploading ChatGPT Image Nov 13, 2025, 11_41_20 PM.png…]()
+
+<img width="1536" height="1024" alt="ChatGPT Image Nov 13, 2025, 11_41_20 PM" src="https://github.com/user-attachments/assets/14e28b30-459d-4cff-b32c-73b57fbcf92c" />
 
 
 ✅ What the app will do
