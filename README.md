@@ -1,30 +1,35 @@
-# Voice Chat Assistant (Android) - Scaffold
-Final Flow
-   User taps mic
-      ↓
-   SpeechRecognizer → "What's the weather today?"
-      ↓
-   Send to OpenAI
-      ↓
-   OpenAI → "It's sunny and 28°C today."
-      ↓
-   TTS speaks the answer
-      ↓
-   UI shows the full conversation
+## Voice Chat Assistant – Android (OpenAI + SpeechRecognizer + TTS)
+✅ What the app will do
+
+User taps a mic button
+
+Android SpeechRecognizer converts speech → text
+
+App sends text to OpenAI GPT API
+
+OpenAI responds with text
+
+Android TextToSpeech converts response → voice
+
+Display conversation in UI (Compose)
+
+## Architecture
+
+UI Layer (Jetpack Compose)
+→ Mic Button
+→ Chat messages list
+
+Voice Layer
+→ SpeechRecognizer
+→ TextToSpeech
+
+Network Layer
+→ Retrofit + OkHttp for OpenAI API requests
 
 It fires POST "https://api.openai.com/v1/chat/completions" endpoint with user message and gets assistant reply.
 
 
 ## What is included
-- Jetpack Compose UI
-- SpeechRecognizer (Android STT)
-- TextToSpeech (TTS)
-- Retrofit + OkHttp integration to call OpenAI (chat completions)
-- Hilt for DI
-- MVVM (ViewModel + Repository)
-- Basic permission handling & sample UI
-
-## Setup steps
 1. Open the project folder in Android Studio (Arctic Fox / Flamingo / Electric Eel or later recommended).
 2. Replace the placeholder `YOUR_OPENAI_KEY` in `NetworkModule.kt` with a secure approach:
    - Use `local.properties` and `BuildConfig` or Android keystore / remote backend.
