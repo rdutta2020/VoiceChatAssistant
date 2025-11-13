@@ -1,4 +1,8 @@
 ## Voice Chat Assistant – Android (OpenAI + SpeechRecognizer + TTS)
+
+![Uploading ChatGPT Image Nov 13, 2025, 11_41_20 PM.png…]()
+
+
 ✅ What the app will do
 
 User taps a mic button
