@@ -14,38 +14,60 @@ import com.example.voicechatassistant.VoiceChatViewModel
 import com.example.voicechatassistant.voice.VoiceRecognizer
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @Composable
 fun VoiceChatScreen(viewModel: VoiceChatViewModel = viewModel()) {
-    val conversation by viewModel.conversation.collectAsState()
     val ctx = LocalContext.current
-    val recognizer = remember { VoiceRecognizer(ctx) }
-    val scope = rememberCoroutineScope()
 
-    LaunchedEffect(Unit) {
-        scope.launch {
-            recognizer.resultsFlow.collectLatest { text ->
-                viewModel.addUserMessage(text)
-            }
-        }
+    var isListening by remember { mutableStateOf(false) }
+
+    val recognizer = remember {
+        VoiceRecognizer(
+            context = ctx,
+            onFinalResult = { viewModel.addUserMessage(it) },
+            onListeningStart = { isListening = true },
+            onListeningStop = { isListening = false },
+            onError = { isListening = false }
+        )
     }
 
-    Column(Modifier.fillMaxSize().padding(16.dp)) {
+    Column(
+        Modifier.fillMaxSize().padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        // Conversation List
+        val conversation by viewModel.conversation.collectAsState()
+
         LazyColumn(modifier = Modifier.weight(1f)) {
-            items(conversation) { pair ->
-                val (isUser, msg) = pair
-                Text(text = if (isUser) "You: $msg" else "AI: $msg", modifier = Modifier
-                    .padding(8.dp))
+            items(conversation) { (isUser, msg) ->
+                Text(
+                    text = if (isUser) "You: $msg" else "AI: $msg",
+                    modifier = Modifier.padding(8.dp)
+                )
             }
         }
 
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Button(onClick = { recognizer.startListening() }, modifier = Modifier.padding(8.dp)) {
+        // 🔥 NEW: Listening indicator
+        if (isListening) {
+            Text(
+                text = "Listening...",
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+
+        Row {
+            Button(
+                onClick = { recognizer.start() },
+                modifier = Modifier.padding(8.dp)
+            ) {
                 Text("Start Talking")
             }
-            Button(onClick = { recognizer.stop() }, modifier = Modifier.padding(8.dp)) {
+
+            Button(
+                onClick = { recognizer.stop() },
+                modifier = Modifier.padding(8.dp)
+            ) {
                 Text("Stop")
             }
         }
